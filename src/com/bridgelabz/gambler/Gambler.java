@@ -18,6 +18,8 @@ public class Gambler {
                 Enter your name""");
         String name = input.next();
         System.out.println("Welcome " + name);
+
+        if (!check())
         play();
     }
 
@@ -42,15 +44,20 @@ public class Gambler {
             System.out.println("Note: Only H or T ---- Make your bet - type 'H' for 'Head' or 'T' for 'Tail' ");
             play();
         }
+
         if ((call.equalsIgnoreCase("H") && "H".equalsIgnoreCase(toss)) ||
                 (call.equalsIgnoreCase("T") && "T".equalsIgnoreCase(toss))) {
-            playCount++;
-            stack++;
-            System.out.println("After " + playCount + " round, now the stacks is " + stack);
+                playCount++;
+                stack++;
+                System.out.println("After " + playCount + " round, now the stacks is " + stack);
         } else {
-            playCount++;
-            stack--;
-            System.out.println("After " + playCount + "games, now the stacks is " + stack);
+                playCount++;
+                stack--;
+                System.out.println("After " + playCount + "games, now the stacks is " + stack);
         }
+    }
+    public static boolean check (){
+        int max = 150, min = 50;
+        return ((stack < max) && (stack > min));
     }
 }
