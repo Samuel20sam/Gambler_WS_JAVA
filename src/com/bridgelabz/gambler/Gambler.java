@@ -8,9 +8,9 @@ public class Gambler {
     public static Random randNum = new Random();
 
     public static int stack = 100;
-    public static int bet = 1;
-    public static int playCount = 0;
-    public static String toss;
+    public static int playCount = 1;
+    public static int dayCount = 1;
+    public static String status;
 
     public static void main(String[] args) {
         System.out.println("""
@@ -19,45 +19,48 @@ public class Gambler {
         String name = input.next();
         System.out.println("Welcome " + name);
 
-        if (!check())
-        play();
+        recursive();
     }
 
     public static void play() {
-        System.out.println("make your bet - type 'H' for 'Head' or 'T' for 'Tail' ");
-        String call = input.next();
-        System.out.println("Call is " + call);
+        int random = randNum.nextInt(2);
+        System.out.println("RandNum number is " + random);
 
-        if (call.equalsIgnoreCase("H") || call.equalsIgnoreCase("T")) {
-            int random = randNum.nextInt(2);
-            System.out.println("RandNum number is " + random);
+        if (random == 0) {
+            System.out.println("And it is Heads");
+            stack++;
 
-            if (random == 0) {
-                toss = String.valueOf('H');
-                System.out.println("And it is Heads");
-
-            } else {
-                toss = String.valueOf('T');
-                System.out.println("And it is Tails");
-            }
         } else {
-            System.out.println("Note: Only H or T ---- Make your bet - type 'H' for 'Head' or 'T' for 'Tail' ");
-            play();
-        }
-
-        if ((call.equalsIgnoreCase("H") && "H".equalsIgnoreCase(toss)) ||
-                (call.equalsIgnoreCase("T") && "T".equalsIgnoreCase(toss))) {
-                playCount++;
-                stack++;
-                System.out.println("After " + playCount + " round, now the stacks is " + stack);
-        } else {
-                playCount++;
-                stack--;
-                System.out.println("After " + playCount + "games, now the stacks is " + stack);
+            System.out.println("And it is Tails");
+            stack--;
         }
     }
-    public static boolean check (){
+
+    public static boolean check() {
         int max = 150, min = 50;
+        if (stack == max)
+            status = "Won";
+        if (stack == min)
+            status = "Lost";
         return ((stack < max) && (stack > min));
+    }
+
+    public static void recursive()
+    {
+        while (dayCount <= 20) {
+            while (playCount != 0) {
+                if (check()) {
+                    play();
+                    System.out.println("After " + playCount + " round, now the stacks is " + stack);
+                    playCount++;
+                } else {
+                    System.out.println("Day of play is " + dayCount + " and the play has " + status + " and the stack is " + stack);
+                    break;
+                }
+            }
+            playCount = 1;
+            stack = 100;
+            dayCount++;
+        }
     }
 }
